@@ -1,0 +1,43 @@
+import processing.serial.*;
+import processing.net.*;
+
+Serial arduinoPort; // 아두이노와의 시리얼 통신을 위한 객체
+
+Server server;
+Client client;
+
+void setup() {
+  // 아두이노와의 시리얼 통신을 설정합니다.
+  server = new Server(this, 12345); // 12345 포트로 서버 생성
+  arduinoPort = new Serial(this, "COM3", 9600); // COM3는 아두이노가 연결된 포트에 대한 예시입니다. 실제 포트 번호에 맞게 수정하세요.
+  arduinoPort.bufferUntil('\n'); // 개행 문자를 기준으로 데이터를 읽습니다.
+}
+
+void draw() {
+  // 프로세싱에서 사용자 입력을 처리하거나 다른 작업을 수행할 수 있습니다.
+  client = server.available(); // 클라이언트 연결 대기
+
+  if (client != null) {
+    String message = client.readString(); // 클라이언트로부터 메시지 읽기
+    println("Received: " + message); // 메시지 콘솔에 출력
+    println("Received: " + message);
+    client.stop(); // 클라이언트 연결 종료
+  }
+}
+
+void keyPressed() {
+  if (key == '0') {
+    arduinoPort.write("0\n"); // 아두이노로 0을 보냅니다.
+  } else if (key == '1') {
+    arduinoPort.write("1\n"); // 아두이노로 1을 보냅니다.
+  } else if (key == '3') {
+    arduinoPort.write("3\n"); // 아두이노로 3을 보냅니다.
+  }
+}
+
+void serialEvent(Serial port) {
+  String data = port.readStringUntil('\n'); // 아두이노에서 받은 데이터를 읽습니다.
+  if (data != null) {
+    println("아두이노로부터 받은 데이터: " + data);
+  }
+}
