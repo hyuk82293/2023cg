@@ -1,25 +1,9 @@
-char inputChar = ' '; // 입력한 한 글자를 저장할 변수
-import processing.serial.*;
-import processing.net.*;
-Serial p;
-Server s;
-Client c;
-void setup(){
-  p = new Serial(this, "COM3", 9600);
-  s = new Server(this, 12345);
-  size(100, 100);
+void setup() {
+  pinMode(11, INPUT_PULLUP);
+  Serial.begin(9600);
 }
-
-void draw() {
-  background(0);
-  fill(255);
-  textSize(32);
-  textAlign(CENTER, CENTER); // 텍스트를 중앙에 정렬
-  text(inputChar, width / 2, height / 2); // 입력한 한 글자를 화면 가운데에 출력
-}
-
-void keyPressed() {
-  if (key == '1' || key == '2') {
-    inputChar = key; // 입력한 한 글자를 변수에 저장
-  }
+void loop() {
+  int sw=digitalRead(11);
+  Serial.println(sw);
+  delay(1000);
 }
